@@ -1,0 +1,69 @@
+﻿@model ShopDoChoiLEGO.Models.NhaSanXuat
+
+@{
+    ViewBag.Title = "Chỉnh sửa nhà sản xuất";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    @Html.HiddenFor(model => model.MaNhaSanXuat)
+                    <td class="label-cell"><strong>@Html.LabelFor(model => model.TenNhaSanXuat, "Tên nhà sản xuất", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.TenNhaSanXuat, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td class="label-cell">
+                        <strong>@Html.LabelFor(model => model.QuocGia, "Quốc gia", htmlAttributes: new { @class = "control-label" })</strong>
+                    </td>
+                    <td class="input-cell">
+                        @Html.DropDownListFor(model => model.QuocGia, new SelectList(new[]
+                        {
+                            new SelectListItem { Text = "Chọn quốc gia", Value = "" },
+                            new SelectListItem { Text = "Việt Nam", Value = "Việt Nam" },
+                            new SelectListItem { Text = "Mỹ", Value = "Mỹ" },
+                            new SelectListItem { Text = "Anh", Value = "Anh" },
+                            new SelectListItem { Text = "Pháp", Value = "Pháp" },
+                            new SelectListItem { Text = "Đức", Value = "Đức" },
+                            new SelectListItem { Text = "Hà Lan", Value = "Hà Lan" },
+                            new SelectListItem { Text = "Nhật Bản", Value = "Nhật Bản" },
+                            new SelectListItem { Text = "Hàn Quốc", Value = "Hàn Quốc" },
+                            new SelectListItem { Text = "Nga", Value = "Nga" },
+                            new SelectListItem { Text = "Trung Quốc", Value = "Trung Quốc" }
+                        }, "Value", "Text", Model.QuocGia), new { @class = "form-control", id = "QuocGia" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label-cell"><strong>@Html.LabelFor(model => model.DiaChi, "Địa chỉ", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <tr>
+                        <td colspan="2" style="text-align: center; color: red;">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Cập nhật
+                        </button>
+                        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+                            <i class="bi bi-chevron-left"></i> Quay lại
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">

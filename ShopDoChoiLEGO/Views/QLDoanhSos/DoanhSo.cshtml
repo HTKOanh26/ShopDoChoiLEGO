@@ -1,0 +1,244 @@
+﻿@{
+    ViewBag.Title = "Doanh số ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<ShopDoChoiLEGO.Models.DonHang>
+
+
+@{
+    // Tạo một Dictionary để lưu trữ số lượng đơn hàng và tổng doanh thu theo từng ngày
+    Dictionary<string, decimal> tongDoanhThuTheoNgay = new Dictionary<string, decimal>();
+    Dictionary<string, int> tongSoDonHangTheoNgay = new Dictionary<string, int>();
+
+    // Tính toán số lượng đơn hàng và tổng doanh thu theo từng ngày
+    foreach (var donHang in Model)
+    {
+        // Kiểm tra xem NgayDatHang có giá trị null không
+        if (donHang.NgayDatHang != null)
+        {
+            var ngay = donHang.NgayDatHang.Value.ToString("dd/MM/yyyy"); // Chuyển thành chuỗi ngày/tháng/năm
+            if (tongDoanhThuTheoNgay.ContainsKey(ngay))
+            {
+                tongDoanhThuTheoNgay[ngay] += donHang.TongTien ?? 0;
+                tongSoDonHangTheoNgay[ngay]++;
+            }
+            else
+            {
+                tongDoanhThuTheoNgay.Add(ngay, donHang.TongTien ?? 0);
+                tongSoDonHangTheoNgay.Add(ngay, 1);
+            }
+        }
+    }
+}
+
+
+<div id="wrapper">
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <!--đơn hàng-->
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            Số lượng đơn hàng
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">@Model.Count() <span>đơn hàng</span></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- doanh thu -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Doanh thu
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">$@Model.Sum(d => d.TongTien) <span class="text-muted small pt-2 ps-1">Tổng doanh thu</span></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- cái dì đó -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            cái dì đây
+                                        </div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm mr-2">
+                                                    <div class="progress-bar bg-info" role="progressbar"
+                                                         style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                         aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- đồ quỷ -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            cái dì đây trời
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row">
+                        <!-- Thẻ Hiển thị Tổng số đơn hàng -->
+                        <div class="col-xxl-4 col-md-6">
+                            <div class="col-xxl-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Biểu đồ số đơn hàng theo ngày</h5>
+                                        <canvas id="donHangChart" width="400" height="200"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- Kết thúc thẻ hiển thị Tổng số đơn hàng -->
+                        <!-- Thẻ Hiển thị Doanh thu -->
+                        <div class="col-xxl-4 col-md-6">
+                            <div class="col-xxl-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Biểu đồ doanh thu theo ngày</h5>
+                                        <canvas id="doanhThuChart" width="400" height="200"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- Kết thúc thẻ hiển thị Doanh thu -->
+                        <!-- Phần chi tiết đơn hàng -->
+                        <div class="col-12">
+                            <div class="card info-card sales-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Chi tiết đơn hàng</h5>
+                                    @if (Model != null && Model.Any())
+                                    {
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mã đơn hàng</th>
+                                                    <th>Mã khách hàng</th>
+                                                    <th>Ngày đặt hàng</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Tổng giá</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td>@item.MaDonHang</td>
+                                                        <td>@item.MaNguoiDung</td>
+                                                        <td>@item.NgayDatHang.Value.ToString("dd/MM/yyyy")</td>
+                                                        <td>@item.TrangThaiDonHang</td>
+                                                        <td>$@item.TongTien</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <p>Không có dữ liệu chi tiết đơn hàng.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ngayDatHangLabels = [@foreach(var ngay in tongSoDonHangTheoNgay.Keys) { <text>'@ngay',</text> }];
+    var tongSoDonHangData = [@foreach(var ngay in tongSoDonHangTheoNgay.Keys) { <text>@tongSoDonHangTheoNgay[ngay],</text> }];
+    var tongDoanhThuData = [@foreach(var ngay in tongDoanhThuTheoNgay.Keys) { <text>@tongDoanhThuTheoNgay[ngay],</text> }];
+
+    var donHangChartCanvas = document.getElementById('donHangChart').getContext('2d');
+    var donHangChart = new Chart(donHangChartCanvas, {
+        type: 'bar',
+        data: {
+            labels: ngayDatHangLabels,
+            datasets: [{
+                label: 'Số đơn hàng',
+                data: tongSoDonHangData,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    var doanhThuChartCanvas = document.getElementById('doanhThuChart').getContext('2d');
+    var doanhThuChart = new Chart(doanhThuChartCanvas, {
+        type: 'bar',
+        data: {
+            labels: ngayDatHangLabels,
+            datasets: [{
+                label: 'Tổng doanh thu',
+                data: tongDoanhThuData,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>

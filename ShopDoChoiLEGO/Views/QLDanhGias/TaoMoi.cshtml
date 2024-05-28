@@ -1,0 +1,63 @@
+﻿@model ShopDoChoiLEGO.Models.DanhGia
+
+@{
+    ViewBag.Title = "Tạo mới đánh giá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.SanPham.MaSanPham, "Mã sản phẩm", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.DropDownList("MaSanPham", null, htmlAttributes: new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.MaNguoiDung, "Mã người dùng", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.DropDownList("MaNguoiDung", null, htmlAttributes: new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td class="label-cell"><strong>@Html.LabelFor(model => model.DiemDanhGia, "Điểm đánh giá", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>
+                        <select id="DiemDanhGia" name="DiemDanhGia" class="form-control">
+                            <option value="1 sao">1 sao</option>
+                            <option value="2 sao">2 sao</option>
+                            <option value="3 sao">3 sao</option>
+                            <option value="4 sao">4 sao</option>
+                            <option value="5 sao">5 sao</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label-cell"><strong>@Html.LabelFor(model => model.NoiDungDanhGia, "Nội dung đánh giá", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td class="input-cell">@Html.EditorFor(model => model.NoiDungDanhGia, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.Label("Ngày đánh giá", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td><input type="date" id="NgayDanhGia" name="NgayDanhGia" class="form-control" /></td>
+                </tr>
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <tr>
+                        <td colspan="2" style="text-align: center; color: red;">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="4" style="text-align: center;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus"></i> Tạo mới
+                        </button>
+                        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+                            <i class="bi bi-chevron-left"></i> Quay lại
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}

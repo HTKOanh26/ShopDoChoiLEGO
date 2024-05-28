@@ -1,0 +1,104 @@
+﻿@model ShopDoChoiLEGO.Models.SanPham
+
+@{
+    ViewBag.Title = "Chỉnh sửa sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("ChinhSua", "QLSanPhams", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    @Html.HiddenFor(model => model.MaSanPham)
+                    <td><strong>@Html.Label("Tên Sản Phẩm", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.TenSanPham, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    <td><strong>@Html.Label("Mô Tả", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.MoTa, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.NgayThemVao, "Ngày thêm vào", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.TextBoxFor(model => model.NgayThemVao, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })</td>
+                    <td><strong>@Html.Label("Trạng thái", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>
+                        @Html.DropDownList("TrangThai", new SelectList(new[]
+                        {
+                            new SelectListItem { Text = "Còn hàng", Value = "Còn hàng" },
+                            new SelectListItem { Text = "Hết hàng", Value = "Hết hàng" }
+                        }, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.MaLoaiSanPham, "Mã loại sản phẩm", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.DropDownList("MaLoaiSanPham", null, htmlAttributes: new { @class = "form-control" })</td>
+                    <td><strong>@Html.LabelFor(model => model.MaNhaSanXuat, "Mã nhà sản xuất", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.DropDownList("MaNhaSanXuat", null, htmlAttributes: new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.MaKhuyenMai, "Mã khuyến mãi", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.DropDownList("MaKhuyenMai", null, htmlAttributes: new { @class = "form-control" })</td>
+                    <td><strong>@Html.LabelFor(model => model.MaKho, "Mã kho", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.DropDownList("MaKho", null, htmlAttributes: new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.Label("Số lượng trong kho", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.SoLuongTrongKho, new { htmlAttributes = new { @class = "form-control" } })</td>
+                    <td><strong>@Html.Label("Giá", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.Gia, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.Label("Hình Ảnh", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td colspan="3">
+                        <div class="form-group">
+                            <input type="file" name="imageFile" id="imageFile" accept="image/*" class="form-control" required="required" onchange="previewFile(event)" />
+                            <img id="previewImage" src="~/Public/image/" alt="Preview" class="mt-2" style="max-width: 400px; max-height: 400px; display: none; float: left; margin-right: 10px;" />
+                            @Html.HiddenFor(model => model.URLHinhAnh)
+                            @Html.ValidationMessageFor(model => model.URLHinhAnh, "", new { @class = "text-danger" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: center;">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Cập nhật
+                        </button>
+
+                        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+                            <i class="bi bi-chevron-left"></i> Quay lại
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+<script>
+    $(function () {
+        $("#NgayThemVao").datepicker();
+    });
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-HVav79c4rr0mCAl7ikAsBZEKjh3r+5VfheM0YG4IC5cEfr5W9l4HNiWcBg0rhK4f1m5WZVZ3vSQS61e/1pG9eg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+<script>
+    function previewFile(event) {
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var preview = document.getElementById('previewImage');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+}

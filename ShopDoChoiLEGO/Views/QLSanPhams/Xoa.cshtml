@@ -1,0 +1,106 @@
+﻿@model ShopDoChoiLEGO.Models.SanPham
+
+@{
+    ViewBag.Title = "Xóa sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm("Xoa", "QLSanPhams", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="container">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.TenSanPham, "Tên Sản Phẩm")</strong></td>
+                <td>@Html.DisplayFor(model => model.TenSanPham)</td>
+                <td><strong>@Html.LabelFor(model => model.MoTa, "Mô Tả")</strong></td>
+                <td>@Html.DisplayFor(model => model.MoTa)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.Gia, "Giá")</strong></td>
+                <td>@Html.DisplayFor(model => model.Gia)</td>
+                <td><strong>@Html.LabelFor(model => model.SoLuongTrongKho, "Số lượng trong kho")</strong></td>
+                <td>@Html.DisplayFor(model => model.SoLuongTrongKho)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.NgayThemVao, "Ngày thêm vào")</strong></td>
+                <td>@Html.DisplayFor(model => model.NgayThemVao)</td>
+                <td><strong>@Html.LabelFor(model => model.TrangThai, "Trạng thái")</strong></td>
+                <td>@Html.DisplayFor(model => model.TrangThai)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.Kho.TenKho, "Kho")</strong></td>
+                <td>@Html.DisplayFor(model => model.Kho.TenKho)</td>
+                <td><strong>@Html.LabelFor(model => model.KhuyenMai.TenKhuyenMai, "Khuyến mãi")</strong></td>
+                <td>@Html.DisplayFor(model => model.KhuyenMai.TenKhuyenMai)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.LoaiSanPham.TenLoaiSanPham, "Loại sản phẩm")</strong></td>
+                <td>@Html.DisplayFor(model => model.LoaiSanPham.TenLoaiSanPham)</td>
+                <td><strong>@Html.LabelFor(model => model.NhaSanXuat.TenNhaSanXuat, "Nhà sản xuất")</strong></td>
+                <td>@Html.DisplayFor(model => model.NhaSanXuat.TenNhaSanXuat)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.Label("Hình Ảnh", htmlAttributes: new { @class = "control-label" })</strong></td>
+                <td colspan="3">
+                    <div class="form-group">
+                        @if (!string.IsNullOrEmpty(Model.URLHinhAnh))
+                        {
+                            <img src="@Url.Content("~/Public/image/" + Model.URLHinhAnh)" alt="Preview" class="mt-2" style="max-width: 200px; max-height: 200px;" />
+                        }
+                        else
+                        {
+                            <span>Không có hình ảnh</span>
+                        }
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Thêm modal xác nhận xóa -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa sản phẩm này?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm mã JavaScript -->
+    <script>
+    $(document).ready(function () {
+        $('#confirmDeleteBtn').click(function () {
+            // Thực hiện hành động xóa khi người dùng xác nhận
+            $('form').submit();
+        });
+    });
+    </script>
+
+    <!-- Thêm nút để mở modal xác nhận xóa -->
+    <div class="text-center">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">
+            <i class="bi bi-trash"></i> Xóa
+        </button>
+        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+            <i class="bi bi-chevron-left"></i> Quay lại
+        </a>
+    </div>
+
+</div>
+}

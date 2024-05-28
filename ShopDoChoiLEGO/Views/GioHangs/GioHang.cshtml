@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_LayoutNguoiDung.cshtml";
+}
+
+@model List<ShopDoChoiLEGO.Models.XemMauGioHang>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+<body>
+    <!-- Cart Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5">
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="bg-secondary text-dark">
+                        <tr>
+                            <th style="white-space: nowrap;">Sản phẩm</th>
+                            <th style="white-space: nowrap;">Giá</th>
+                            <th style="white-space: nowrap;">Số lượng</th>
+                            <th style="white-space: nowrap;">Tổng giá</th>
+                            <th style="white-space: nowrap;">Chức năng</th>
+                        </tr>
+                    </thead>
+                    @if (Model.Count > 0)
+                    {
+                        foreach (var item in Model)
+                        {
+
+                            <tbody class="align-middle">
+                                <a href="@Url.Action("ChiTietSanPham", "SanPhams", new { maSanPham = item.MaSanPham })">
+
+                                <tr>
+                                    <td class="align-middle" style="white-space: nowrap;"><img src="~/Public/image/@item.URLHinhAnh" alt="@item.TenSanPham" style="width: 50px; "> @item.TenSanPham</td>
+                                    <td class="align-middle">@item.Gia</td>
+                                    <td class="align-middle">
+                                        <div class="input-group quantity mx-auto" style="width: 100px;">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-sm btn-primary btn-minus" type="button" onclick="capNhatSoLuong('@item.MaSanPham', -1)">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm bg-secondary text-center" value="@item.SoLuong">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-sm btn-primary btn-plus" type="button" onclick="capNhatSoLuong('@item.MaSanPham', 1)">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">$@(item.Gia * item.SoLuong)</td>
+                                    <td class="align-middle">
+                                        <div class="d-flex justify-content-start">
+                                            <button class="btn btn-sm btn-primary mr-2" type="button" onclick="xoaSanPham('@item.MaSanPham')">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <form onsubmit="return thanhToanSanPham(this);">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="maSanPham" value="@item.MaSanPham">
+                                                <button class="btn btn-sm btn-primary" type="submit">
+                                                    <i class="fa fa-shopping-bag"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+
+
+
+                                </tr>
+
+
+                            </tbody>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+        <!-- Cart End -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+</body>
+
+<script>
+    function capNhatSoLuong(maSanPham, thayDoi) {
+        // Gọi AJAX để cập nhật số lượng trên server
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("CapNhatSoLuong", "GioHangs")",
+            data: { maSanPham: maSanPham, thayDoi: thayDoi },
+            success: function () {
+                // Nếu cập nhật thành công, tải lại trang để cập nhật hiển thị
+                location.reload();
+            },
+            error: function () {
+                alert("Lỗi cập nhật số lượng.");
+            }
+        });
+    }
+
+    function xoaSanPham(maSanPham) {
+        // Gọi AJAX để xóa sản phẩm trên server
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("XoaSanPham", "GioHangs")",
+            data: { maSanPham: maSanPham },
+            success: function () {
+                // Nếu xóa thành công, hiển thị thông báo và tải lại trang để cập nhật hiển thị
+                swal("Thành công", "Sản phẩm đã được xóa khỏi giỏ hàng!", "success")
+                .then(() => {
+                    location.reload();
+                });
+            },
+            error: function () {
+                alert("Lỗi xóa sản phẩm.");
+            }
+        });
+    }
+
+    function thanhToanSanPham(form) {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("MuaNgay", "GioHangs")",
+                data: $(form).serialize(),
+                success: function () {
+                    swal("Thành công", "Bạn đã mua hàng thành công!", "success")
+                    .then(() => {
+                        location.reload();
+                    });
+                },
+                error: function () {
+                    alert("Lỗi khi thực hiện thanh toán.");
+                }
+            });
+            return false; // Ngăn chặn hành động mặc định của form
+        }
+</script>
+
+

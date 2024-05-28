@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Đơn hàng";
+    Layout = "~/Views/Shared/_LayoutNguoiDung.cshtml";
+}
+@model List<ShopDoChoiLEGO.Models.MauDonHang>
+
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="mb-4 text-center">
+                    <h2 class="mb-0">Đơn hàng của bạn</h2>
+                    <h4 class="text-muted mb-0">(Bạn có @Model.Count mặt hàng)</h4>
+                </div>
+
+                @if (Model.Count > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <a href="@Url.Action("ChiTietSanPham", "SanPhams", new { maSanPham = item.MaSanPham })">
+                                            <img src="~/Public/image/@item.URLHinhAnh" alt="@item.TenSanPham" class="img-thumbnail rounded" style="max-width: 130px;" />
+                                        </a>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <h5 class="card-title">@item.TenSanPham</h5>
+                                        <p><strong>Số lượng:</strong> @item.SoLuong</p>
+                                        <p><strong>Giá:</strong> $@item.Gia</p>
+                                        <p><strong>Tổng giá:</strong> $@item.TongTien</p>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p><strong>Trạng thái đơn hàng:</strong> @item.TrangThaiDonHang</p>
+                                        <p><strong>Mã thanh toán:</strong> @item.MaThanhToan</p>
+                                        <p><strong>Ngày đặt hàng:</strong> @item.NgayDatHang</p>
+                                    </div>
+                                    
+                                    </div>
+                            </div>
+                        </div>
+                       
+
+                    }
+                }
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <a href="@Url.Action("TrangChinh", "TrangChinhs")" class="btn btn-primary">
+                                <i class="bi bi-chevron-left"></i> Quay lại mua hàng
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

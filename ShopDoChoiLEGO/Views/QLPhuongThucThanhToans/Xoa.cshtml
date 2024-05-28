@@ -1,0 +1,36 @@
+﻿@model ShopDoChoiLEGO.Models.PhuongThucThanhToan
+
+@{
+    ViewBag.Title = "Xóa phương thức thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.MaPhuongThucThanhToan, "Mã phương thức thanh toán")</strong></td>
+                    <td>@Html.DisplayFor(model => model.MaPhuongThucThanhToan)</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.TenPhuongThucThanhToan, "Tên phương thức thanh toán")</strong></td>
+                    <td>@Html.DisplayFor(model => model.TenPhuongThucThanhToan)</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Xóa
+                        </button>
+                        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+                            <i class="bi bi-chevron-left"></i> Quay lại
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+}

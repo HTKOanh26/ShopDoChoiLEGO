@@ -1,0 +1,80 @@
+﻿@model ShopDoChoiLEGO.Models.NguoiDung
+
+@{
+    ViewBag.Title = "Tạo mới người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td><strong>@Html.Label("Tên đăng nhập", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.TenDangNhap, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.Label("Mật khẩu", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.Label("Họ và tên", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.Email, "Email", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>
+                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><strong>@Html.Label("Địa chỉ giao hàng", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.DiaChiGiaoHang, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.Label("Số điện thoại", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.SoDienThoai, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.Label("Loại tài khoản", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>
+                        @Html.DropDownListFor(model => model.LoaiTaiKhoan, new SelectList(new[]
+                        {
+                            new { Value = "Quản trị viên", Text = "Quản trị viên" },
+                            new { Value = "Khách hàng", Text = "Khách hàng" }
+                        }, "Value", "Text"), new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.NgayDangKy, "Ngày đăng ký", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>
+                        @Html.TextBoxFor(model => model.NgayDangKy, new { @class = "form-control", @readonly = "readonly", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
+                        @Html.HiddenFor(model => model.NgayDangKy)
+                    </td>
+                </tr>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <tr>
+                        <td colspan="2" style="text-align: center; color: red;">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="4" style="text-align: center;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus"></i> Tạo mới
+                        </button>
+                        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+                            <i class="bi bi-chevron-left"></i> Quay lại
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}

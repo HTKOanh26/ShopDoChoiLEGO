@@ -1,0 +1,92 @@
+﻿@model ShopDoChoiLEGO.Models.DonHang
+
+@{
+    ViewBag.Title = "Xóa đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="container">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.MaDonHang, "Mã đơn hàng") </strong></td>
+                <td>@Html.DisplayFor(model => model.MaDonHang)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.NguoiDung.TenDangNhap, "Tên đăng nhập") </strong></td>
+                <td>@Html.DisplayFor(model => model.NguoiDung.TenDangNhap)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.MaSanPham, "Mã sản phẩm") </strong></td>
+                <td>@Html.DisplayFor(model => model.MaSanPham)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.NgayDatHang, "Ngày đặt hàng") </strong></td>
+                <td>@Html.DisplayFor(model => model.NgayDatHang)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.TrangThaiDonHang, "Trạng thái đơn hàng") </strong></td>
+                <td>@Html.DisplayFor(model => model.TrangThaiDonHang)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.TongTien, "Tổng tiền") </strong></td>
+                <td>@Html.DisplayFor(model => model.TongTien)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.MaThanhToan, "Mã thanh toán") </strong></td>
+                <td>@Html.DisplayFor(model => model.MaThanhToan)</td>
+            </tr>
+            <tr>
+                <td><strong>@Html.LabelFor(model => model.SoLuong, "Số lượng") </strong></td>
+                <td>@Html.DisplayFor(model => model.SoLuong)</td>
+            </tr>
+
+        </tbody>
+    </table>
+    <!-- Thêm modal xác nhận xóa -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Xác nhận xóa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn xóa sản phẩm này?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm mã JavaScript -->
+    <script>
+        $(document).ready(function () {
+            $('#confirmDeleteBtn').click(function () {
+                // Thực hiện hành động xóa khi người dùng xác nhận
+                $('form').submit();
+            });
+        });
+    </script>
+
+    <!-- Thêm nút để mở modal xác nhận xóa -->
+    <div class="text-center">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal">
+            <i class="bi bi-trash"></i> Xóa
+        </button>
+        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+            <i class="bi bi-chevron-left"></i> Quay lại
+        </a>
+    </div>
+</div>
+}

@@ -1,0 +1,71 @@
+﻿@model ShopDoChoiLEGO.Models.TaiKhoan
+
+@{
+    ViewBag.Title = "Cập nhật tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    @Html.HiddenFor(model => model.MaTaiKhoan)
+                    <td><strong>@Html.LabelFor(model => model.MaNguoiDung, "Mã người dùng", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.DropDownList("MaNguoiDung", null, htmlAttributes: new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.LoaiTaiKhoan, "Loại tài khoản", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>
+                        @Html.DropDownList("LoaiTaiKhoan", new SelectList(new[]
+         {
+                            new SelectListItem { Text = "Quản trị viên", Value = "Quản trị viên" },
+                            new SelectListItem { Text = "Khách hàng", Value = "Quản trị viên" },
+                        }, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.NgayTao, "Ngày tạo", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.TextBoxFor(model => model.NgayTao, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.TrangThaiTaiKhoan, "Trạng thái tài khoản", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>
+                        @Html.DropDownList("TrangThaiTaiKhoan", new SelectList(new[]
+         {
+                            new SelectListItem { Text = "Đã kích hoạt", Value = "Đã kích hoạt" },
+                            new SelectListItem { Text = "Chưa kích hoạt", Value = "Chưa kích hoạt" },
+                        }, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+                    </td>
+                </tr>
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <tr>
+                        <td colspan="2" style="text-align: center; color: red;">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="4" style="text-align: center;">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Cập nhật
+                        </button>
+
+                        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+                            <i class="bi bi-chevron-left"></i> Quay lại
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+}

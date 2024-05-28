@@ -1,0 +1,65 @@
+﻿@model ShopDoChoiLEGO.Models.DonHang
+
+@{
+    ViewBag.Title = "Chỉnh sửa đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    @Html.HiddenFor(model => model.MaDonHang)
+                    <td><strong>@Html.LabelFor(model => model.MaNguoiDung, "Mã người dùng", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.DropDownList("MaNguoiDung", null, htmlAttributes: new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.MaSanPham, "Mã sản phẩm", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.MaSanPham, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.NgayDatHang, "Ngày đặt hàng", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.TextBoxFor(model => model.NgayDatHang, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.TrangThaiDonHang, "Trạng thái đơn hàng", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>
+                        @Html.DropDownList("TrangThaiDonHang", new SelectList(new[]
+         {
+                            new SelectListItem { Text = "Đang giao hàng", Value = "Đang giao hàng" },
+                            new SelectListItem { Text = "Đang chuẩn bị hàng", Value = "Đang chuẩn bị hàng" },
+                            new SelectListItem { Text = "Đơn hàng đã hủy", Value = "Đơn hàng đã hủy" }
+                        }, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.TongTien, "Tổng tiền", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.TongTien, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.MaThanhToan, "Mã thanh toán", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.MaThanhToan, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.SoLuong, "Số lượng", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.SoLuong, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: center;">
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Cập nhật
+                        </button>
+
+                        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+                            <i class="bi bi-chevron-left"></i> Quay lại
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}

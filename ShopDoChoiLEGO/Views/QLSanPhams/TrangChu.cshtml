@@ -1,0 +1,118 @@
+﻿@model IEnumerable<ShopDoChoiLEGO.Models.SanPham>
+
+@{
+    ViewBag.Title = "Trang chủ sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+    .no-wrap {
+        white-space: nowrap;
+    }
+</style>
+<div class="container-fluid">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">Thông báo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @TempData["SuccessMessage"]
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tiếp tục</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JavaScript để hiển thị modal tự động khi trang tải -->
+        <script>
+            $(document).ready(function () {
+                $('#successModal').modal('show');
+            });
+        </script>
+    }
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Sản phẩm</h1>
+        <a href="@Url.Action("TaoMoi", "QLSanPhams")" class="d-none d-sm-inline-block btn btn-sm btn-primary btn-custom shadow-sm">
+            <i class="fas fa-plus fa-sm"></i>
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Bảng dữ liệu</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="example" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th class="no-wrap">Mã sản phẩm</th>
+                            <th class="no-wrap">Tên loại sản phẩm</th>
+                            <th class="no-wrap">Tên sản phẩm</th>
+                            <th class="no-wrap">Số lượng</th>
+                            <th class="no-wrap">Kho</th>
+                            <th class="no-wrap">Nhà sản xuất</th>
+                            <th class="no-wrap">Mô tả</th>
+                            <th class="no-wrap">Giá</th>
+                            <th class="no-wrap">Hình ảnh</th>
+                            <th class="no-wrap">Ngày thêm</th>
+                            <th class="no-wrap">Trạng thái</th>
+                            <th class="no-wrap">Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.MaSanPham)</td>
+                                <td>@Html.DisplayFor(modelItem => item.LoaiSanPham.TenLoaiSanPham)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TenSanPham)</td>
+                                <td>@Html.DisplayFor(modelItem => item.SoLuongTrongKho)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Kho.TenKho)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NhaSanXuat.TenNhaSanXuat)</td>
+                                <td>@Html.DisplayFor(modelItem => item.MoTa)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Gia)</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.URLHinhAnh))
+                                    {
+                                        <img src="~/Public/image/@item.URLHinhAnh" alt="Hình ảnh" style="width: 100px; height: 100px" />
+                                    }
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.NgayThemVao)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TrangThai)</td>
+                                <td class="table-cell">
+                                    <div class="btn-group" role="group">
+                                        <a href="@Url.Action("ChinhSua", new { id = item.MaSanPham})" class="btn btn-sm btn-warning btn-custom shadow-sm">
+                                            <i class="fas fa-edit fa-sm"></i>
+                                        </a>
+                                        <a href="@Url.Action("Xoa", new { id = item.MaSanPham})" class="btn btn-sm btn-danger btn-custom shadow-sm">
+                                            <i class="fas fa-trash fa-sm"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+

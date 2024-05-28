@@ -1,0 +1,46 @@
+﻿@model ShopDoChoiLEGO.Models.Kho
+
+@{
+    ViewBag.Title = "Chỉnh sửa kho";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    @Html.HiddenFor(model => model.MaKho)
+                    <td><strong>@Html.Label("Tên kho", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.TenKho, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.Label("Địa chỉ", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.Label("Số lượng sản phẩm trong kho", htmlAttributes: new { @class = "control-label" })</strong></td>
+                    <td>@Html.EditorFor(model => model.SoLuongSanPhamTrongKho, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: center;">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Cập nhật
+                        </button>
+
+                        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+                            <i class="bi bi-chevron-left"></i> Quay lại
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+}

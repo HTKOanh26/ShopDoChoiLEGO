@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ShopDoChoiLEGO.Models.Kho>
+
+@{
+    ViewBag.Title = "Trang chủ kho";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <style>
+        .table-cell {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        .header-cell {
+            border: 1px solid #ccc;
+            padding: 8px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="header-cell" style="white-space: nowrap;">Mã kho</th>
+                    <th class="header-cell" style="white-space: nowrap;">Tên kho</th>
+                    <th class="header-cell" style="white-space: nowrap;">Địa chỉ</th>
+                    <th class="header-cell" style="white-space: nowrap;">Số lượng sản phẩm trong kho</th>
+                    <th class="header-cell" style="white-space: nowrap;">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="table-cell">@Html.DisplayFor(modelItem => item.MaKho)</td>
+                        <td class="table-cell">@Html.DisplayFor(modelItem => item.TenKho)</td>
+                        <td class="table-cell">@Html.DisplayFor(modelItem => item.DiaChi)</td>
+                        <td class="table-cell">@Html.DisplayFor(modelItem => item.SoLuongSanPhamTrongKho)</td>
+                        <td class="table-cell">
+                            <div class="btn-group" role="group">
+                                <a href="@Url.Action("TaoMoi", "QLKhos")" class="btn btn-primary" title="Tạo mới"><i class="bi bi-plus"></i>Tạo mới</a>
+                                <a href="@Url.Action("ChinhSua", new { id = item.MaKho })" class="btn btn-warning" title="Chỉnh sửa"><i class="bi bi-pencil"></i>Chỉnh sửa</a>
+                                <a href="@Url.Action("Xoa", new { id = item.MaKho })" class="btn btn-danger" title="Xóa bỏ"><i class="bi bi-trash"></i>Xóa</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+
+
+

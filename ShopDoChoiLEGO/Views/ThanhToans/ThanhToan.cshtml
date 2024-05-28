@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_LayoutNguoiDung.cshtml";
+}
+@model ShopDoChoiLEGO.Models.MauThanhToan
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="~/Public/css/ThanhToan.css" rel="stylesheet" />
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card mt-5">
+                    <div class="card-header text-center">
+                        <h3 class="text-danger mb-0">Thanh toán sản phẩm</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4>Mã sản phẩm: @Model.MaSanPham</h4>
+                                <h4>Tên sản phẩm: @Model.TenSanPham</h4>
+                                <h4>Số lượng: @Model.SoLuong</h4>
+                                <h4>Giá: $@Model.Gia</h4>
+                                <hr>
+                                <h3 class="text-danger">Tổng tiền: $@(Model.Gia * Model.SoLuong)</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Phương thức thanh toán</h4>
+                                
+
+                                @using (Html.BeginForm("MuaNgay", "GioHangs", FormMethod.Post, new { @class = "needs-validation", novalidate = "true" }))
+
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <div class="form-group">
+                                        <label for="maGiamGia">Mã khuyến mãi</label>
+                                        @Html.DropDownList("MaKhuyenMai", ViewBag.MaKhuyenMai as SelectList, new { @class = "form-control", id = "maKhuyenMai" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="paymentSelect">Mã phương thức thanh toán</label>
+                                        @Html.DropDownList("MaPhuongThucThanhToan", ViewBag.MaPhuongThucThanhToan as SelectList, new { @class = "form-control", id = "paymentSelect" })
+                                    </div>
+
+                                    <input type="hidden" name="maSanPham" value="@Model.MaSanPham">
+                                    <button type="submit" class="btn btn-info"><i class="fas fa-money-check"></i> THANH TOÁN</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

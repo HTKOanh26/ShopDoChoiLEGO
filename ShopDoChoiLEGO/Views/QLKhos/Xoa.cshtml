@@ -1,0 +1,44 @@
+﻿@model ShopDoChoiLEGO.Models.Kho
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    @Html.HiddenFor(model => model.MaKho)
+                    <td><strong>@Html.LabelFor(model => model.MaKho, "Tên kho")</strong></td>
+                    <td>@Html.DisplayFor(model => model.MaKho)</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.TenKho, "Tên kho")</strong></td>
+                    <td>@Html.DisplayFor(model => model.TenKho)</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.DiaChi, "Địa chỉ")</strong></td>
+                    <td>@Html.DisplayFor(model => model.DiaChi)</td>
+                </tr>
+                <tr>
+                    <td><strong>@Html.LabelFor(model => model.SoLuongSanPhamTrongKho, "Số lượng sản phẩm trong kho")</strong></td>
+                    <td>@Html.DisplayFor(model => model.SoLuongSanPhamTrongKho)</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Xóa
+                        </button>
+                        <a href="@Url.Action("TrangChu")" class="btn btn-default">
+                            <i class="bi bi-chevron-left"></i> Quay lại
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
